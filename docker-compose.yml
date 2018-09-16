@@ -1,0 +1,13 @@
+version : "3"
+
+services:
+  django_rest_svc:
+    build: .
+    image: django_rest_svc:development
+    ports:
+      - 5000:5000
+
+networks: 
+  default:
+    external:
+      name: my-shared-network
