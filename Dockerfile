@@ -4,11 +4,10 @@ LABEL maintainer="Rosa Imantoro <rosaimantoro@gmail.com>"
 
 RUN apt-get update \
     && apt-get install -y git vim \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && mkdir app
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY ./app/* entrypoint.sh ./app/
+COPY ./entrypoint.sh ./
 
-RUN chmod +x /app/entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT [ "/app/entrypoint.sh" ]
+ENTRYPOINT [ "/entrypoint.sh" ]
