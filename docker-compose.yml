@@ -1,11 +1,13 @@
 version : "3"
 
 services:
-  django_rest_svc:
+  rest_training:
     build: .
-    image: django_rest_svc:development
+    image: rest_training:development
     ports:
       - 5000:5000
+    volumes:
+      - ./app:/env_p36/app
 
 networks: 
   default:
