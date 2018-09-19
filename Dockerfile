@@ -10,4 +10,6 @@ COPY ./entrypoint.sh ./
 
 RUN chmod +x /entrypoint.sh
 
+ENV FLASK_ENV=development
+
 ENTRYPOINT [ "/entrypoint.sh" ]
