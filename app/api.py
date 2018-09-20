@@ -15,7 +15,7 @@ class Client(Resource):
         parser.add_argument('status', location='args')
         args = parser.parse_args()
         
-        return {'client_id': args['client_id'], 'client_key': args['client_key'], 'client_secret': args['client_secret'], 'status': args['status']}
+        return {'client_id': args['client_id'], 'client_key': args['client_key'], 'client_secret': args['client_secret'], 'status': args['status']}, 200, {'X-Response': 'Nothing'}
     
     def post(self):
         parser = reqparse.RequestParser()
