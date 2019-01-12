@@ -1,7 +1,8 @@
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
 from time import strftime
-import json
+import json, logging
+from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
 api = Api(app)
@@ -82,4 +83,12 @@ api.add_resource(PersonResource, '/name')
 
 
 if __name__ == '__main__':
-   app.run(debug=True, host='0.0.0.0', port=5000)
+
+	## define log format and create a rotating log with max size of 10MB and max backup up to 10 files
+	formatter = logging.Formatter("[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
+	log_handler = RotatingFileHandler("%s/%s" % (app.root_path, 'storage/log/app.log'), maxBytes=10000, backupCount=10)
+	log_handler.setLevel(logging.INFO)
+	log_handler.setFormatter(formatter)
+	app.logger.addHandler(log_handler)
+
+	app.run(debug=True, host='0.0.0.0', port=5000)
