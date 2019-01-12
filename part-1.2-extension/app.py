@@ -38,9 +38,9 @@ class Person():
 # 		person.sex = data['sex']
 # 		return json.dumps(person.__dict__), 200, { 'Content-Type': 'application/json' }
 # 	elif request.method == 'DELETE':
-# 		return 'Deleted!', 200
+# 		return 'Deleted', 200
 # 	else:
-# 		return 'Not yet implement!', 501
+# 		return 'Not yet implement', 501
 
 ## Using flask-restful
 class PersonResource(Resource):
@@ -78,10 +78,10 @@ class PersonResource(Resource):
 	
 	def delete(self):
 		self.person = Person()
-		return 'Deleted!', 200
+		return 'Deleted', 200
 	
 	def patch(self):
-		return 'Not yet implement!', 501
+		return 'Not yet implement', 501
 
 ## Flask-restful routes
 

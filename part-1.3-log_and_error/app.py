@@ -12,7 +12,10 @@ api = Api(app)
 
 @app.after_request
 def after_request(response):
-	app.logger.warning("REQUEST_LOG\t%s", json.dumps({ 'request': request.get_json(), 'response': json.loads(response.data.decode('utf-8')) }))
+	try:
+		app.logger.warning("REQUEST_LOG\t%s", json.dumps({ 'request': request.get_json(), 'response': json.loads(response.data.decode('utf-8')) }))
+	except Exception as e:
+		app.logger.warning("ERROR_LOG\t%s", e)
 	return response
 
 #### PERSON CLASS
@@ -20,6 +23,9 @@ def after_request(response):
 class Person():
 
 	def __init__(self):
+		self.reset()
+
+	def reset(self):
 		self.name = None
 		self.age = 0
 		self.sex = None
@@ -62,11 +68,11 @@ class PersonResource(Resource):
 		return self.person.__dict__, 200, { 'Content-Type': 'application/json' }
 	
 	def delete(self):
-		self.person = Person()
-		return 'Deleted!', 200
+		self.person.reset()
+		return 'Deleted', 200
 	
 	def patch(self):
-		return 'Not yet implement!', 501
+		return 'Not yet implement', 501
 
 #################################### 
 # Flask-restful routes 

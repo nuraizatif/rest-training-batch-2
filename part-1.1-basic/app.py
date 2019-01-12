@@ -36,9 +36,9 @@ def name_controller():
 		person.sex = data['sex']
 		return json.dumps(person.__dict__), 200, { 'Content-Type': 'application/json' }
 	elif request.method == 'DELETE':
-		return 'Deleted!', 200
+		return 'Deleted', 200
 	else:
-		return 'Not yet implement!', 501
+		return 'Not yet implement', 501
 
 if __name__ == '__main__':
    app.run(debug=True, host='0.0.0.0', port=5000)
