@@ -3,10 +3,10 @@ from flask import Blueprint
 from flask_restful import Api, Resource, reqparse \
 	, marshal, fields
 
-from . import model
-
 bp_person = Blueprint('bp_person', __name__)
 api = Api(bp_person)
+
+from . import model
 
 #################################### 
 # Using flask-restful 
