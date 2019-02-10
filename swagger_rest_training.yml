@@ -685,6 +685,9 @@ components:
               enum:
                 - male
                 - female     
+            client_id:
+              type: "integer"
+              example: 1
     ObjUserReqBody:
       type: "object"
       allOf:
@@ -704,6 +707,9 @@ components:
               enum:
                 - male
                 - female 
+            client_id:
+              type: "integer"
+              example: 1
     ObjUserList:
       type: "array"
       items:
