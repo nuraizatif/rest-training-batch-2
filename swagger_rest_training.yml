@@ -1,0 +1,835 @@
+openapi: "3.0.0"
+info:
+  description: "Untuk materi pelatihan week-5 - REST API"
+  version: "1.0.0"
+  title: "RentABook API"
+  termsOfService: ""
+  contact:
+    email: "jellyfish@sepulsa.com"
+servers:
+  - url: http://0.0.0.0:5000
+tags:
+- name: "Authentication"
+  description: "Request for your access authentication"
+  externalDocs:
+    description: ""
+    url: ""
+- name: "Client"
+  description: "Client resource"
+- name: "User"
+  description: "User resource"
+- name: "Book"
+  description: "Book resource"
+- name: "Rent"
+  description: "Rent transaction resource"
+
+paths:
+  /token:
+    get:
+      tags:
+      - "Authentication"
+      summary: "Request access token"
+      operationId: "reqAuthGetToken"
+      parameters:
+        - in: "query"
+          name: "client_id"
+          schema:
+            type: "string"
+          description: "API Key"
+          required: true
+        - in: "query"
+          name: "client_secret"
+          schema:
+            type: "string"
+          description: "API Secret"
+          required: true
+      responses:
+        401:
+          $ref: "#/components/schemas/ApiResponse401"
+        400:
+          $ref: "#/components/schemas/ApiResponse400"
+        422:
+          $ref: "#/components/schemas/ApiResponse422"
+        200:
+          description: "Status OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: "string"
+                    example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDkwMDg0NjksIm5iZiI6MTU0OTAwODQ2OSwianRpIjoiODYyMDNkMGMtZDNkOS00NGFjLWFmYjMtMjA5MjIwNWNmYmIzIiwiZXhwIjoxNTQ5MDk0ODY5LCJpZGVudGl0eSI6ImFsdGFyZXN0IiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.TxuKpwggKLvLe1cv_6N0ktslk5uLT6FkwbMz3Lt2dKc"
+  
+  /client/{id}:
+    get:
+      tags: 
+      - "Client"
+      summary: "Get client by id"
+      description: ""
+      operationId: "reqGetClient"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjClient"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+    put:
+      tags: 
+      - "Client"
+      summary: "Update client"
+      description: ""
+      operationId: "reqUpdateClient"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ObjClientReqBody"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjClient"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+    delete:
+      tags: 
+      - "Client"
+      summary: "Delete client"
+      description: ""
+      operationId: "reqDeleteClient"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          $ref: "#/components/responses/200_delete"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+  /client:
+    get:
+      tags: 
+      - "Client"
+      summary: "Get all client"
+      description: ""
+      operationId: "reqGetClientAll"
+      parameters:
+        - in: query
+          name: p
+          description: "page number"
+          schema:
+            type: integer
+        - in: query
+          name: rp
+          description: "record per page"
+          schema:
+            type: integer
+        - in: query
+          name: client_id
+          description: "filter by client_id"
+          schema:
+            type: integer
+        - in: query
+          name: status
+          description: "filter by status"
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjClientList"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+    post:
+      tags: 
+      - "Client"
+      summary: "Add new client"
+      description: ""
+      operationId: "reqAddNewClient"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ObjClientReqBody"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjClient"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+
+  /book/{id}:
+    get:
+      tags: 
+      - "Book"
+      summary: "Get book by id"
+      description: ""
+      operationId: "reqGetBook"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjBook"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+    put:
+      tags: 
+      - "Book"
+      summary: "Update book"
+      description: ""
+      operationId: "reqUpdateBook"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ObjBookReqBody"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjBook"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+    delete:
+      tags: 
+      - "Book"
+      summary: "Delete book"
+      description: ""
+      operationId: "reqDeleteBook"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          $ref: "#/components/responses/200_delete"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+  /book:
+    get:
+      tags: 
+      - "Book"
+      summary: "Get all book"
+      description: ""
+      operationId: "reqGetBookAll"
+      parameters:
+        - in: query
+          name: p
+          description: "page number"
+          schema:
+            type: integer
+        - in: query
+          name: rp
+          description: "record per page"
+          schema:
+            type: integer
+        - in: query
+          name: title
+          description: "filter by title"
+          schema:
+            type: string
+        - in: query
+          name: isbn
+          description: "filter by isbn"
+          schema:
+            type: string
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjBookList"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+    post:
+      tags: 
+      - "Book"
+      summary: "Add new client"
+      description: ""
+      operationId: "reqAddNewClient"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ObjClientReqBody"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjClient"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+  
+  /user/{id}:
+    get:
+      tags: 
+      - "User"
+      summary: "Get user by id"
+      description: ""
+      operationId: "reqUserBook"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjUser"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+    put:
+      tags: 
+      - "User"
+      summary: "Update user"
+      description: ""
+      operationId: "reqUpdateUser"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ObjUserReqBody"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjUser"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+    delete:
+      tags: 
+      - "User"
+      summary: "Delete a user"
+      description: ""
+      operationId: "reqDeleteUser"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          $ref: "#/components/responses/200_delete"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+  /user:
+    get:
+      tags: 
+      - "User"
+      summary: "Get all user"
+      description: ""
+      operationId: "reqGetUserAll"
+      parameters:
+        - in: query
+          name: p
+          description: "page number"
+          schema:
+            type: integer
+        - in: query
+          name: rp
+          description: "record per page"
+          schema:
+            type: integer
+        - in: query
+          name: title
+          description: "filter by title"
+          schema:
+            type: string
+        - in: query
+          name: isbn
+          description: "filter by isbn"
+          schema:
+            type: string
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjUserList"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+    post:
+      tags: 
+      - "User"
+      summary: "Add new user"
+      description: ""
+      operationId: "reqAddNewUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ObjUserReqBody"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjUser"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+  
+  /rent/{id}:
+    get:
+      tags: 
+      - "Rent"
+      summary: "Get book-rent transaction"
+      description: ""
+      operationId: "reqGetRent"
+      parameters:
+        - in: path
+          name: id
+          description: "Book rent transaction id"
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjRent"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+  /rent:
+    get:
+      tags: 
+      - "Rent"
+      summary: "Get all rent transaction"
+      description: ""
+      operationId: "reqGetRentAll"
+      parameters:
+        - in: query
+          name: p
+          description: "page number"
+          schema:
+            type: integer
+        - in: query
+          name: rp
+          description: "record per page"
+          schema:
+            type: integer
+        - in: query
+          name: book_id
+          description: "filter by book id"
+          schema:
+            type: integer
+        - in: query
+          name: user_id
+          description: "filter by user id"
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjRentList"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+    post:
+      tags: 
+      - "Rent"
+      summary: "Rent a book"
+      description: "Rent a book for one user and one book"
+      operationId: "reqAddNewRent"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ObjRentReqBody"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjRent"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+  
+
+components:
+  securitySchemes:
+    jwtInternal:
+      type: "http"
+      scheme: "bearer"
+    jwtMerchant:
+      type: "http"
+      scheme: "bearer"
+  parameters:
+    Authorization:
+      in: "header"
+      name: "Authorization"
+      schema:
+        type: "string"
+      description: "JWT bearer token"
+      example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+    X-Signature:
+      in: "header"
+      name: "X-Signature"
+      schema:
+        type: "string"
+      description: "Request signature signed by Merchant's private key"
+      example: "UQvWgR8j1Pg6ep5MvmoB5MrWI1gJzWVCMAFeY+aTRnh4XkpZcMRrqUwJl0oxnndIA6k0SgnDpap5dD+izke6MHzNtzwHoWue5mGKinEiqBBsTUBx6wx8e32AhvzKlLPEi+GKvQlHfWEBsh8l0AuyCvtvyUhsxQ7ZA3YSJnho3OXpdNq2R4cmkuQdMoo8P5zKFv9/tMSSWhOxJVphWbFW1qm8sLLdWBSuHnMnMUq8q+DVky/IJ6agfqovL3eFthvT1pv58TfWNABhtjvR1cYrUcjJ7vZ5m9AMeWJ85dEqNJfNsc5q6CyeHh2SmWf5LPudUx6UVuyT2oX47qwcnEhAWg=="
+      required: true
+  responses:
+    200_delete:
+      description: "Success delete"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiResponse200Delete"
+    401:
+      description: "Unauthorized"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiResponse400"
+    400:
+      description: "Bad Request"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiResponse400"
+    422:
+      description: "Unacceptable Entity"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiResponse422"
+    404:
+      description: "Bad Request"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiResponse404"
+  schemas:
+    ObjDefaultDatesAttr:
+      type: "object"
+      properties:
+        created_at:
+          type: "string"
+          example: "2019-02-18T00:00:00"
+        updated_at:
+          type: "string"
+          example: "2019-02-18T00:00:00"
+        deleted_at:
+          type: "string"
+          example: "2019-02-18T00:00:00"
+    ObjClientReqBody:
+      type: "object"
+      allOf:
+        - type: "object"
+          properties:
+            client_id:
+              type: "integer"
+              example: 1234
+            client_key:
+              type: "string"
+              example: "CLIENT01"
+            client_secret:
+              type: "string"
+              example: "SECRET01"
+            status:
+              type: "boolean"
+              example: true
+    ObjClient:
+      type: "object"
+      allOf:
+        - $ref: "#/components/schemas/ObjDefaultDatesAttr"
+        - type: "object"
+          properties:
+            client_id:
+              type: "integer"
+              example: 1234
+            client_key:
+              type: "string"
+              example: "CLIENT01"
+            client_secret:
+              type: "string"
+              example: "SECRET01"
+            status:
+              type: "boolean"
+              example: true
+    ObjClientList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/ObjClient"
+      example:
+        - client_id: 1
+          client_key: "CLIENT01"
+          client_secret: "SECRET01"
+          status: true
+        - client_id: 2
+          client_key: "CLIENT02"
+          client_secret: "SECRET02"
+          status: true
+    
+    ObjUser:
+      type: "object"
+      allOf:
+        - $ref: "#/components/schemas/ObjDefaultDatesAttr"
+        - type: "object"
+          properties:
+            id:
+              type: "integer"
+              example: 1
+            name:
+              type: "string"
+              example: "Rudy Sujarwo"
+            age:
+              type: "integer"
+              example: 56
+            sex:
+              type: "string"
+              enum:
+                - male
+                - female     
+    ObjUserReqBody:
+      type: "object"
+      allOf:
+        - type: "object"
+          properties:
+            id:
+              type: "integer"
+              example: 1
+            name:
+              type: "string"
+              example: "Rudy Sujarwo"
+            age:
+              type: "integer"
+              example: 56
+            sex:
+              type: "string"
+              enum:
+                - male
+                - female 
+    ObjUserList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/ObjUser"
+
+    ObjBook:
+      type: "object"
+      allOf:
+        - $ref: "#/components/schemas/ObjDefaultDatesAttr"
+        - type: "object"
+          properties:
+            id:
+              type: "integer"
+              example: 1234
+            title:
+              type: "string"
+              example: "Judul Buku Satu"
+            isbn:
+              type: "string"
+              example: "1-234-5678-9101112-13"
+            writer:
+              type: "string"
+              example: "Dr. Who"
+    ObjBookReqBody:
+      type: "object"
+      allOf:
+        - type: "object"
+          properties:
+            id:
+              type: "integer"
+              example: 1234
+            title:
+              type: "string"
+              example: "Judul Buku Satu"
+            isbn:
+              type: "string"
+              example: "1-234-5678-9101112-13"
+            writer:
+              type: "string"
+              example: "Dr. Who"
+    ObjBookList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/ObjBook"
+
+    ObjRent:
+      type: "object"
+      allOf:
+        - type: "object"
+          properties:
+            id:
+              type: "integer"
+              example: 1234
+            book_id:
+              type: "integer"
+              example: "1234"
+            user_id:
+              type: "integer"
+              example: 1
+            return_date:
+              type: "string"
+              example: "2019-03-01T23:59:59"
+            user:
+              $ref: "#/components/schemas/ObjUser"
+            book:
+              $ref: "#/components/schemas/ObjBook"
+        - $ref: "#/components/schemas/ObjDefaultDatesAttr"
+    ObjRentReqBody:
+      required:
+        - book_id
+        - user_id
+      type: "object"
+      properties:
+        book_id:
+          type: "integer"
+          example: 1234
+        user_id:
+          type: "integer"
+          example: 1
+    ObjRentList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/ObjRent"
+
+    ApiResponse401:
+      type: "object"
+      properties:
+        message:
+          type: "string"
+          description: "Message for invalid process"
+          example: "unauthorized"
+    ApiResponse404:
+      type: "object"
+      properties:
+        message:
+          type: "string"
+          description: "Message for invalid process"
+          example: "not found"
+    ApiResponse400:
+      type: "object"
+      properties:
+        message:
+          type: "string"
+          description: "Message for invalid process"
+          example: "bad request"
+    ApiResponse200Delete:
+      type: "object"
+      properties:
+        message:
+          type: "string"
+          description: "Message for success delete"
+          example: "deleted"
+    ApiResponse422:
+      type: "object"
+      properties:
+        validation_errors:
+          type: "object"
+          properties:
+            attribute_name:
+              type: "array"
+              items:
+                type: "string"
+                example: "Invalid validation message"
+            another_attribute_name:
+              type: "array"
+              items:
+                type: "string"
+                example: "Invalid validation message"
+                
